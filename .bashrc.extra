@@ -1,0 +1,7 @@
+# use up/down arrow keys for 'recursive i' history
+if [[ $- == *i* ]]
+then
+    bind '"\e[A": history-search-backward'
+    bind '"\e[B": history-search-forward'
+fi
+
