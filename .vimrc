@@ -7,6 +7,7 @@ set shiftwidth=4
 set tabstop=4
 set expandtab
 set hlsearch
+set paste
 hi Search cterm=NONE ctermbg=red
 " end: personal
 
