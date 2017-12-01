@@ -54,17 +54,6 @@ echo ""
 echo "$files" "$directories"
 echo ""
 
-while true; do
-    read -p "Are you sure you want to do it? [yes/no]: " yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) echo "Quitting."; exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
-
-echo "Continuing"
-
 # Copy files
 log "Copying files from $(pwd) to $dest"
 while read -r dotfile
