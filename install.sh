@@ -47,13 +47,6 @@ sudo apt-get install vim
 files=$(ls -pd .?* | grep -v /$ | sed '/^$/d')
 directories=$(ls -pd .?* | grep  /$ | sed "$exclude_dirs_pattern" | sed '/^$/d')
 
-echo ""
-echo "The following files/directories will be copied, and overwritten if they"
-echo "already exist:"
-echo ""
-echo "$files" "$directories"
-echo ""
-
 # Copy files
 log "Copying files from $(pwd) to $dest"
 while read -r dotfile
