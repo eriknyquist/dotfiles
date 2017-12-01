@@ -4,13 +4,23 @@
 
 vundle_url=https://github.com/VundleVim/Vundle.vim
 dotfiles_url=https://github.com/eriknyquist/dotfiles
-dotfiles_clone=$(mktemp)
-bashrc_source_cmd="source ~/.bashrc.extra"
+dotfiles_clone=$(mktemp -d)
 exclude_dirs_pattern="s/\.\.\///g; s/\.\///g; s/\.git\///g"
 
 log() {
     printf "\n%s\n" "$1"
 }
+
+if [ $# -gt 0 ]
+then
+    dest="$1"
+else
+    dest="$HOME"
+fi
+
+bashrc_source_cmd="source $dest/.bashrc.extra"
+
+echo "Installing dotfiles in $dest"
 
 # Test if script is running from a local clone of dotfiles repo
 git remote -v | grep "github.com/eriknyquist/dotfiles" &> /dev/null
@@ -32,7 +42,7 @@ fi
 # Install vim and vundle
 log "Installing vim and Vundle (sudo required)"
 sudo apt-get install vim
- [ -d ~/.vim/bundle/Vundle.vim ] || git clone "$vundle_url" ~/.vim/bundle/Vundle.vim 
+ [ -d "$dest"/.vim/bundle/Vundle.vim ] || git clone "$vundle_url" "$dest"/.vim/bundle/Vundle.vim
 
 files=$(ls -pd .?* | grep -v /$ | sed '/^$/d')
 directories=$(ls -pd .?* | grep  /$ | sed "$exclude_dirs_pattern" | sed '/^$/d')
@@ -56,38 +66,40 @@ done
 echo "Continuing"
 
 # Copy files
-log "Copying files from $(pwd) to $HOME"
+log "Copying files from $(pwd) to $dest"
 while read -r dotfile
 do
     echo "$dotfile"
-    cp "$dotfile" "$HOME"
+    cp "$dotfile" "$dest"
 done <<< "$files"
 
 # Copy directories
-log "Copying directories from $(pwd) to $HOME"
+log "Copying directories from $(pwd) to $dest"
 while read -r dir
 do
     echo "$dir"
-    cp -r "$dir" "$HOME"
+    cp -r "$dir" "$dest"
 done <<< "$directories"
 
 log "Setting up dotfiles"
 
 # Include my bashrc (if not already included)
-grep "^$bashrc_source_cmd *$" ~/.bashrc
+grep "^$bashrc_source_cmd *$" "$dest"/.bashrc
 if [ $? -eq 0 ]
 then
-    echo "~/.bashrc.extra already included in ~/.bashrc, skipping..."
+    echo ".bashrc.extra already included in .bashrc, skipping..."
 else
-    echo "source ~/.bashrc.extra" >> ~/.bashrc
-
-    # Re-load bashrc
-    source ~/.bashrc
+    echo "source $dest/.bashrc.extra" >> "$dest"/.bashrc
 fi
-
-# Re-load .inputrc
-bind -f ~/.inputrc
 
 # Install Vundle plugins
 log "Installing Vundle plugins"
 vim +PluginInstall +qall
+
+echo ""
+echo "Dotfiles are installed. Run the folowing shell commands"
+echo "to activate the changes without rebooting:"
+echo ""
+echo "  bind -f $dest/.inputrc"
+echo "  source $dest/.bashrc"
+echo ""
