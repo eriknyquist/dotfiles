@@ -6,4 +6,4 @@ terminal...
 
 ::
 
-    curl https://raw.githubusercontent.com/eriknyquist/dotfiles/master/install.sh | sudo bash
+    curl https://raw.githubusercontent.com/eriknyquist/dotfiles/master/install.sh | sudo bash -s ~
