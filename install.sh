@@ -42,7 +42,10 @@ fi
 # Install vim and vundle
 log "Installing vim and Vundle (sudo required)"
 sudo apt-get install vim
- [ -d "$dest"/.vim/bundle/Vundle.vim ] || git clone "$vundle_url" "$dest"/.vim/bundle/Vundle.vim
+[ -d "$dest"/.vim/bundle/Vundle.vim ] || git clone "$vundle_url" "$dest"/.vim/bundle/Vundle.vim
+
+[ -d "$dest"/.vim/doc ] || mkdir -p "$dest"/.vim/doc
+cp "cheat.txt" "$dest"/.vim/doc
 
 files=$(ls -pd .?* | grep -v /$ | sed '/^$/d')
 directories=$(ls -pd .?* | grep  /$ | sed "$exclude_dirs_pattern" | sed '/^$/d')
@@ -76,7 +79,7 @@ fi
 
 # Install Vundle plugins
 log "Installing Vundle plugins"
-vim +PluginInstall +qall -E
+vim +PluginInstall +helptags "$dest"/.vim/doc +qall -E
 
 echo ""
 echo "Dotfiles are installed. Run the folowing shell command"

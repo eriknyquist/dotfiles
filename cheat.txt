@@ -1,0 +1,22 @@
+*cheat.txt*   For Vim version 7.4 Last change: 2017 December 02
+*cheat*
+
+VIM cheat sheet
+
+===============================================================================
+
+File browser
+------------
+
+:CtrlP
+
+Toggle line comment
+-------------------
+
+gcc
+
+Strip all trailing whitespace in buffer
+---------------------------------------
+
+,,
+
