@@ -1,0 +1,122 @@
+\documentclass{article}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{geometry}
+\usepackage{color}
+\usepackage{hyperref}
+
+% Custom colors for syntax highlighting
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{lightgray}{rgb}{0.66, 0.66, 0.66}
+
+% No indentation at start of paragraphs
+\setlength{\parindent}{0pt}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\footnotesize\ttfamily,
+framextopmargin=40pt,
+escapechar=\%,
+otherkeywords={self},
+commentstyle=\color{lightgray},
+keywordstyle=\color{deepblue},
+emphstyle=\color{deepred},
+stringstyle=\color{deepgreen},
+showstringspaces=false
+}}
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+  \pythonstyle
+  \lstset{#1}
+}
+{}
+
+% Python sample
+%
+% \begin{python}
+%
+% python code...
+%
+% \end{python}
+
+% Replacement commands
+%
+% \newcommand{\var1}{Replacement Text}
+% \newcommand{\var2}{Other Replacement Text}
+
+% "Note" box
+%
+% \noindent\fbox{
+%   \parbox{0.9\textwidth} {
+%     \emph{Note}: Super important message
+%   }
+% }
+
+% Numbered list
+%
+% \begin{enumerate}
+% \item Item 1 text
+% \item Item 2 text
+% \end{enumerate}
+
+% Bullet list
+%
+% \begin{itemize}
+% \item Item 1 text
+% \item Item 2 text
+% \end{itemize}
+
+% Click-able URL
+%
+% \url{https://www.google.com}
+
+% Table
+%
+% \begin{center}
+%   \begin{tabular}{@{} | l | p{8cm} | @{}}
+%   \hline
+%   Cell 1A Cell 2A \\ \hline
+%   Cell 1B & Cell 2B \\ \hline
+% \end{tabular}
+
+\end{center}
+
+% Start new page
+% \newpage
+
+% Vertical padding
+%
+% \vspace{12pt}
+
+% Title page
+\title{Document Title}
+\date{0-0-0000}
+
+% Start of document
+\begin{document}
+\maketitle
+\newpage
+
+\section{Section title}
+
+blah blah blah
+
+\subsection{Subsection title}
+
+blah blah blah
+
+\subsubsection{Subsubsection title}
+
+blah blah blah
+
+\section{Section title}
+
+blah blah blah
+
+\end{document}
