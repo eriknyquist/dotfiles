@@ -76,12 +76,11 @@ fi
 
 # Install Vundle plugins
 log "Installing Vundle plugins"
-vim +PluginInstall +qall
+vim +PluginInstall +qall -E
 
 echo ""
-echo "Dotfiles are installed. Run the folowing shell commands"
+echo "Dotfiles are installed. Run the folowing shell command"
 echo "to activate the changes without rebooting:"
 echo ""
-echo "  bind -f $dest/.inputrc"
-echo "  source $dest/.bashrc"
+echo "  source $dest/.bashrc; bind -f $dest/.inputrc"
 echo ""
