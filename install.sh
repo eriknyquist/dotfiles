@@ -79,6 +79,7 @@ fi
 
 # Install Vundle plugins
 log "Installing Vundle plugins"
+chmod -R a+rw "$dest"/.vim
 vim +PluginInstall +helptags "$dest"/.vim/doc +qall -E
 
 echo ""
