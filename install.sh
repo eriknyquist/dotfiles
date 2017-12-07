@@ -80,7 +80,7 @@ fi
 # Install Vundle plugins
 log "Installing Vundle plugins"
 chmod -R a+rw "$dest"/.vim
-vim +PluginInstall +helptags "$dest"/.vim/doc +qall -E
+sudo -u $(logname) vim -u "$dest"/.vimrc +silent +PluginInstall +helptags "$dest"/.vim/doc +qall -E
 
 echo ""
 echo "Dotfiles are installed. Run the folowing shell command"
