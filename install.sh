@@ -41,7 +41,7 @@ fi
 
 # Install vim and vundle
 log "Installing vim and Vundle (sudo required)"
-sudo apt-get install vim
+sudo apt-get install -y vim
 [ -d "$dest"/.vim/bundle/Vundle.vim ] || git clone "$vundle_url" "$dest"/.vim/bundle/Vundle.vim
 
 [ -d "$dest"/.vim/doc ] || mkdir -p "$dest"/.vim/doc
