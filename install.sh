@@ -77,6 +77,10 @@ else
     echo "source $dest/.bashrc.extra" >> "$dest"/.bashrc
 fi
 
+# Set git configuration
+git config --global user.name "Erik Nyquist"
+git config --global user.email "eknyquist@gmail.com"
+
 # Install Vundle plugins
 log "Installing Vundle plugins"
 chmod -R a+rw "$dest"/.vim
