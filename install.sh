@@ -2,6 +2,7 @@
 
 # Installs my dotfiles, and vim (+plugins)
 
+main_user=$(logname)
 vundle_url=https://github.com/VundleVim/Vundle.vim
 dotfiles_url=https://github.com/eriknyquist/dotfiles
 dotfiles_clone=$(mktemp -d)
@@ -20,7 +21,11 @@ fi
 
 bashrc_source_cmd="source $dest/.bashrc.extra"
 
-echo "Installing dotfiles in $dest"
+log "Installing git"
+
+apt-get install -y git
+
+log "Installing dotfiles in $dest"
 
 # Test if script is running from a local clone of dotfiles repo
 git remote -v | grep "github.com/eriknyquist/dotfiles" &> /dev/null
@@ -41,7 +46,7 @@ fi
 
 # Install vim and vundle
 log "Installing vim and Vundle (sudo required)"
-sudo apt-get install -y vim
+apt-get install -y vim
 [ -d "$dest"/.vim/bundle/Vundle.vim ] || git clone "$vundle_url" "$dest"/.vim/bundle/Vundle.vim
 
 [ -d "$dest"/.vim/doc ] || mkdir -p "$dest"/.vim/doc
@@ -77,14 +82,16 @@ else
     echo "source $dest/.bashrc.extra" >> "$dest"/.bashrc
 fi
 
+log "Setting git configuration"
+
 # Set git configuration
-git config --global user.name "Erik Nyquist"
-git config --global user.email "eknyquist@gmail.com"
+sudo -u $main_user git config --global user.name "Erik Nyquist"
+sudo -u $main_user git config --global user.email "eknyquist@gmail.com"
 
 # Install Vundle plugins
 log "Installing Vundle plugins"
 chmod -R a+rw "$dest"/.vim
-sudo -u $(logname) vim -u "$dest"/.vimrc +silent +PluginInstall +helptags "$dest"/.vim/doc +qall -E
+sudo -u $main_user vim -u "$dest"/.vimrc +silent +PluginInstall +helptags "$dest"/.vim/doc +qall -E
 
 echo ""
 echo "Dotfiles are installed. Run the folowing shell command"
