@@ -87,6 +87,7 @@ log "Setting git configuration"
 # Set git configuration
 sudo -u $main_user git config --global user.name "Erik Nyquist"
 sudo -u $main_user git config --global user.email "eknyquist@gmail.com"
+sudo -u $main_user git config --global core.editor "vim"
 
 # Install Vundle plugins
 log "Installing Vundle plugins"
