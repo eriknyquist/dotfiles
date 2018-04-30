@@ -1,3 +1,60 @@
+cproj() {
+    if [ $# -lt 1 ] || [ $# -gt 2 ]
+    then
+        echo "Usage: $0 <project_name> [<directory>]"
+        return
+    fi
+
+    directory=""
+    projname=$1
+    guard=$(echo $projname | awk '{print toupper($0)}')_H
+
+    if [ $# -eq 2 ]
+    then
+        directory=$2/
+        [ -d $directory ] || mkdir -p $directory
+    fi
+
+    cat > $directory$projname.h << EOF
+#ifndef $guard
+#define $guard
+
+
+
+#endif
+EOF
+
+    cat > $directory$projname.c << EOF
+#include "$projname.h"
+
+
+EOF
+
+    cat > $directory'main.c' << EOF
+#include "$projname.h"
+
+int main(int argc, char *argv[])
+{
+
+}
+EOF
+
+    cat > $directory'Makefile' << EOF
+SRC=\$(wildcard *.c)
+OBJ=\$(SRC: .c=.o)
+
+all: \$(OBJ)
+	\$(CC) $^ -o $projname \$(CFLAGS) \$(LDFLAGS)
+
+%.o: %.c
+	\$(CC) -c $< -o \$@
+
+clean:
+	rm -f *.o
+	rm -f $projname
+EOF
+}
+
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
 }
