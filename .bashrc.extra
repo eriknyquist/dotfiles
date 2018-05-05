@@ -5,15 +5,17 @@ cproj() {
         return
     fi
 
-    directory=""
     projname=$1
     guard=$(echo $projname | awk '{print toupper($0)}')_H
 
     if [ $# -eq 2 ]
     then
         directory=$2/
-        [ -d $directory ] || mkdir -p $directory
+    else
+        directory=$projname/
     fi
+
+    [ -d $directory ] || mkdir -p $directory
 
     cat > $directory$projname.h << EOF
 #ifndef $guard
@@ -40,18 +42,21 @@ int main(int argc, char *argv[])
 EOF
 
     cat > $directory'Makefile' << EOF
-SRC=\$(wildcard *.c)
-OBJ=\$(SRC: .c=.o)
+OBJ= \$(patsubst %.c,%.o,\$(wildcard *.c))
+PROGNAME=$projname
 
-all: \$(OBJ)
-	\$(CC) $^ -o $projname \$(CFLAGS) \$(LDFLAGS)
+.PHONY: clean
 
-%.o: %.c
-	\$(CC) -c $< -o \$@
+%: %.c
+
+all: \$(PROGNAME)
+
+\$(PROGNAME): \$(OBJ)
+	\$(CC) $^ -o \$@ \$(CFLAGS) \$(LDFLAGS)
 
 clean:
 	rm -f *.o
-	rm -f $projname
+	rm -f \$(PROGNAME)
 EOF
 }
 
