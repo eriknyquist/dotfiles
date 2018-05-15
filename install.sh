@@ -77,7 +77,7 @@ if [ $? -eq 0 ]
 then
     echo ".bashrc.extra already included in .bashrc, skipping..."
 else
-    echo "source $dest/.bashrc.extra" >> "$dest"/.bashrc
+    echo "$bashrc_source_cmd" >> "$dest"/.bashrc
 fi
 
 log "Setting git configuration"
