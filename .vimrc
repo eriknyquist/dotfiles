@@ -33,3 +33,4 @@ filetype plugin indent on
 
 colorscheme badwolf
 noremap ,, :%s/\s\+$//e<CR>
+noremap <CR><CR> :CtrlP<CR>
