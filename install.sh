@@ -3,6 +3,7 @@
 # Installs my dotfiles, and vim (+plugins)
 
 install_pkgs="git vim ctags"
+
 main_user=$(logname)
 vundle_url=https://github.com/VundleVim/Vundle.vim
 dotfiles_url=https://github.com/eriknyquist/dotfiles
@@ -29,7 +30,7 @@ log "Installing packages"
 apt-get install -y $install_pkgs
 
 # Test if script is running from a local clone of dotfiles repo
-git remote -v | grep "github.com/eriknyquist/dotfiles" &> /dev/null
+git remote -v | grep $dotfiles_url &> /dev/null
 ret=$?
 
 # grep returned an error
