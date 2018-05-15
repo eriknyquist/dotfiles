@@ -9,6 +9,12 @@ set expandtab
 set hlsearch
 set paste
 hi Search cterm=NONE ctermbg=red
+
+" Run a shell command silently and redraw the screen
+command! -nargs=1 Silent execute 'silent <args>' | redraw!
+
+set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
+command! Tags Silent !ctags -o .tags -R .
 " end: personal
 
 " start: required for Vundle

@@ -2,6 +2,7 @@
 
 # Installs my dotfiles, and vim (+plugins)
 
+install_pkgs="git vim ctags"
 main_user=$(logname)
 vundle_url=https://github.com/VundleVim/Vundle.vim
 dotfiles_url=https://github.com/eriknyquist/dotfiles
@@ -19,13 +20,13 @@ else
     dest="$HOME"
 fi
 
+vim_dest="$dest"/.vim
+vim_doc="$vim_dest"/doc
+vundle_dest="$vim_dest"/bundle/Vundle.vim
 bashrc_source_cmd="source $dest/.bashrc.extra"
 
-log "Installing git"
-
-apt-get install -y git
-
-log "Installing dotfiles in $dest"
+log "Installing packages"
+apt-get install -y $install_pkgs
 
 # Test if script is running from a local clone of dotfiles repo
 git remote -v | grep "github.com/eriknyquist/dotfiles" &> /dev/null
@@ -44,13 +45,10 @@ then
     cd "$dotfiles_clone"
 fi
 
-# Install vim and vundle
-log "Installing vim and Vundle (sudo required)"
-apt-get install -y vim
-[ -d "$dest"/.vim/bundle/Vundle.vim ] || git clone "$vundle_url" "$dest"/.vim/bundle/Vundle.vim
+[ -d "$vundle_dest" ] || git clone "$vundle_url" "$vundle_dest"
 
-[ -d "$dest"/.vim/doc ] || mkdir -p "$dest"/.vim/doc
-cp "cheat.txt" "$dest"/.vim/doc
+[ -d "$vim_doc" ] || mkdir -p "$vim_doc"
+cp "cheat.txt" "$vim_doc"
 
 files=$(ls -pd .?* | grep -v /$ | sed '/^$/d')
 directories=$(ls -pd .?* | grep  /$ | sed "$exclude_dirs_pattern" | sed '/^$/d')
@@ -91,8 +89,8 @@ sudo -u $main_user git config --global core.editor "vim"
 
 # Install Vundle plugins
 log "Installing Vundle plugins"
-chmod -R a+rw "$dest"/.vim
-sudo -u $main_user vim -u "$dest"/.vimrc +silent +PluginInstall +helptags "$dest"/.vim/doc +qall -E
+chmod -R a+rw "$vim_dest"
+sudo -u $main_user vim -u "$dest"/.vimrc +silent +PluginInstall +helptags "$vim_doc" +qall -E
 
 echo ""
 echo "Dotfiles are installed. Run the folowing shell command"
