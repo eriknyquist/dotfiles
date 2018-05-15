@@ -2,13 +2,16 @@
 
 # Installs my dotfiles, and vim (+plugins)
 
-install_pkgs="git vim ctags"
+###################   Configurable stuff   ####################
 
-main_user=$(logname)
+install_pkgs="git vim ctags"
 vundle_url=https://github.com/VundleVim/Vundle.vim
 dotfiles_url=https://github.com/eriknyquist/dotfiles
-dotfiles_clone=$(mktemp -d)
-exclude_dirs_pattern="s/\.\.\///g; s/\.\///g; s/\.git\///g"
+git_user_name="Erik Nyquist"
+git_user_email="eknyquist@gmail.com"
+git_editor="vim"
+
+###############################################################
 
 log() {
     printf "\n%s\n" "$1"
@@ -21,10 +24,14 @@ else
     dest="$HOME"
 fi
 
+main_user=$(logname)
 vim_dest="$dest"/.vim
 vim_doc="$vim_dest"/doc
 vundle_dest="$vim_dest"/bundle/Vundle.vim
 bashrc_source_cmd="source $dest/.bashrc.extra"
+dotfiles_clone=$(mktemp -d)
+exclude_dirs_pattern="s/\.\.\///g; s/\.\///g; s/\.git\///g"
+
 
 log "Installing packages"
 apt-get install -y $install_pkgs
@@ -84,9 +91,9 @@ fi
 log "Setting git configuration"
 
 # Set git configuration
-sudo -u $main_user git config --global user.name "Erik Nyquist"
-sudo -u $main_user git config --global user.email "eknyquist@gmail.com"
-sudo -u $main_user git config --global core.editor "vim"
+sudo -u $main_user git config --global user.name $git_user_name
+sudo -u $main_user git config --global user.email $git_user_email
+sudo -u $main_user git config --global core.editor $git_editor
 
 # Install Vundle plugins
 log "Installing Vundle plugins"
