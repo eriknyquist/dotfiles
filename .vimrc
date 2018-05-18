@@ -1,4 +1,3 @@
-" start: personal
 syntax on
 set t_Co=256
 set colorcolumn=80
@@ -10,23 +9,49 @@ set hlsearch
 set paste
 hi Search cterm=NONE ctermbg=red
 
+function! HLNext ()
+    let [bufnum, lnum, col, off] = getpos('.')
+    let matchlen = strlen(matchstr(strpart(getline('.'), col-1), @/))
+    let target_pat = '\c\%#'.@/
+	let hlgroup = 'Error'
+
+    let hlnext = matchadd(hlgroup, target_pat, 101)
+    redraw
+endfunction
+
+" Recognise hidden .tags file
+set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
+
+" re-mappings
+noremap ' l:nohl<CR>h
+noremap ,, :%s/\s\+$//e<CR>
+noremap <CR><CR> :CtrlP<CR>
+nnoremap <silent> n n:call HLNext()<CR>
+nnoremap <silent> N n:call HLNext()<CR>
+
+" commands
+
 " Run a shell command silently and redraw the screen
 command! -nargs=1 Silent execute 'silent <args>' | redraw!
 
-set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
+" Run 'ctags' in current directory
 command! Tags Silent !ctags -o .tags -R .
+
 " end: personal
 
-" start: required for Vundle
+
+
+"-------------------------- required for Vundle --------------------------------
+
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'kien/ctrlp.vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'sjl/badwolf'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -37,6 +62,13 @@ call vundle#end()
 filetype plugin indent on
 " end: required for Vundle
 
+" This has to go after the plugin declarations....
 colorscheme badwolf
-noremap ,, :%s/\s\+$//e<CR>
-noremap <CR><CR> :CtrlP<CR>
+
+"------------------------- Plugin configuration --------------------------------
+
+" configure netrw
+let g:netrw_liststyle=3
+let g:netrw_banner=0
+let g:netrw_altv=1
+let g:netrw_winsize=25
