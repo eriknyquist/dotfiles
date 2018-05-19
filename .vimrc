@@ -5,10 +5,9 @@ set notimeout ttimeout ttimeoutlen=200
 set shiftwidth=4
 set tabstop=4
 set expandtab
-set hlsearch
 set paste
-hi Search cterm=NONE ctermbg=red
 
+" colours the currently selected search match red
 function! HLNext ()
     let [bufnum, lnum, col, off] = getpos('.')
     let matchlen = strlen(matchstr(strpart(getline('.'), col-1), @/))
@@ -19,6 +18,13 @@ function! HLNext ()
     redraw
 endfunction
 
+" sets custom highlights used for all search matches
+function! SetHL ()
+    execute 'highlight Search ctermbg=White'
+    execute 'highlight Search ctermfg=Black'
+    execute 'highlight Normal ctermfg=Gray'
+endfunction
+
 " Recognise hidden .tags file
 set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
 
@@ -26,14 +32,14 @@ set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
 " re-mappings
 
 " turn off syntax colours when I'm searching for something
-nnoremap / :syntax off<CR>/
+nnoremap / :set t_ve=<CR>:call SetHL()<CR>:syntax off<CR>/
 
 " highlight the current match in red when I'm cycling through matches
 nnoremap <silent> n n:call HLNext()<CR>
 nnoremap <silent> N n:call HLNext()<CR>
 
 "  turn syntax colours back on, and remove all highlights
-noremap ; :syntax on<CR>l:nohl<CR>h
+noremap ; :syntax on<CR>l:set t_ve&<CR>:nohl<CR>h
 
 " strip trailing whitespace in current buffer
 noremap ,, :%s/\s\+$//e<CR>
@@ -75,6 +81,8 @@ filetype plugin indent on
 
 " This has to go after the plugin declarations....
 colorscheme badwolf
+
+set hlsearch
 
 "------------------------- Plugin configuration --------------------------------
 
