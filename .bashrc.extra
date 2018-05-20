@@ -1,3 +1,47 @@
+export VIM_CTAGS_FTYPES=*.c,*.h,*.py,*.sh,*.mk,*Makefile,*.tex,*.vim
+export VIM_CTAGS_FILE=.tags
+
+update_ctags () {
+    VIM_CTAGS_FILE=".tags"
+
+    TOPDIR=$(git rev-parse --show-toplevel)
+    # Bail if not in a git repository
+    [ $? -eq 0 ] || return
+
+    # Bail if no tags file already exists
+    [ -f $TOPDIR/$VIM_CTAGS_FILE ] || return
+
+    # Get filename relative to repo root, then add backslashes
+    # before '.' and '/' to make it suitable for a sed pattern
+    RELFNAME=$(realpath --relative-to=$TOPDIR $1)
+    [ $? -eq 0 ] || return
+
+    # Need the absolute path to check if file is in git repo
+    ABSFNAME=$(realpath $1)
+    [ $? -eq 0 ] || return
+
+    if [ "${ABSFNAME##$TOPDIR}" == "${ABSFNAME}" ]
+    then
+        # Target file is not in the current git repository
+        exit
+    fi
+
+    # Add backslashes before '.' and '/' to make filename
+    # suitable for a sed pattern
+    ESCFNAME=$(echo $RELFNAME | sed 's/\//\\\//g; s/\./\\\./g')
+    [ $? -eq 0 ] || return
+
+    cd $TOPDIR
+
+    # Remove all tags for this file from tags file
+    sed -i "/$ESCFNAME/d" $VIM_CTAGS_FILE
+    [ $? -eq 0 ] || return
+
+    # Re-generate tags for this file and append to tags file
+    ctags -a -f $VIM_CTAGS_FILE $RELFNAME
+    cd -
+}
+
 cproj() {
     if [ $# -lt 1 ] || [ $# -gt 2 ]
     then

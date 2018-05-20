@@ -6,9 +6,10 @@ set shiftwidth=4
 set tabstop=4
 set expandtab
 set paste
+set shellcmdflag=-ic
 
 " colours the currently selected search match red
-function! HLNext ()
+function! HighlightNextMatch ()
     let [bufnum, lnum, col, off] = getpos('.')
     let matchlen = strlen(matchstr(strpart(getline('.'), col-1), @/))
     let target_pat = '\c\%#'.@/
@@ -19,7 +20,7 @@ function! HLNext ()
 endfunction
 
 " sets custom highlights used for all search matches
-function! SetHL ()
+function! SetSearchHighlight ()
     execute 'highlight Search ctermbg=White'
     execute 'highlight Search ctermfg=Black'
     execute 'highlight Normal ctermfg=Gray'
@@ -32,14 +33,14 @@ set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
 " re-mappings
 
 " turn off syntax colours when I'm searching for something
-nnoremap / :set t_ve=<CR>:call SetHL()<CR>:syntax off<CR>/
+nnoremap / :call SetSearchHighlight()<CR>:syntax off<CR>/
 
 " highlight the current match in red when I'm cycling through matches
-nnoremap <silent> n n:call HLNext()<CR>
-nnoremap <silent> N n:call HLNext()<CR>
+nnoremap <silent> n n:call HighlightNextMatch()<CR>
+nnoremap <silent> N n:call HighlightNextMatch()<CR>
 
-"  turn syntax colours back on, and remove all highlights
-noremap ; :syntax on<CR>l:set t_ve&<CR>:nohl<CR>h
+" turn syntax colours back on, and remove all highlights
+noremap ; :syntax on<CR>l:nohl<CR>h
 
 " strip trailing whitespace in current buffer
 noremap ,, :%s/\s\+$//e<CR>
@@ -53,10 +54,6 @@ command! -nargs=1 Silent execute 'silent <args>' | redraw!
 
 " Run 'ctags' in current directory
 command! Tags Silent !ctags -o .tags -R .
-
-" end: personal
-
-
 
 "-------------------------- required for Vundle --------------------------------
 
@@ -83,6 +80,11 @@ filetype plugin indent on
 colorscheme badwolf
 
 set hlsearch
+
+augroup BufWriteGroup
+    autocmd!
+    autocmd BufWritePost $VIM_CTAGS_FTYPES Silent !update_ctags <afile>
+augroup END
 
 "------------------------- Plugin configuration --------------------------------
 

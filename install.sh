@@ -4,7 +4,7 @@
 
 ###################   Configurable stuff   ####################
 
-install_pkgs="git vim ctags"
+install_pkgs="git vim ctags realpath"
 vundle_url=https://github.com/VundleVim/Vundle.vim
 dotfiles_url=https://github.com/eriknyquist/dotfiles
 git_user_name="Erik Nyquist"
