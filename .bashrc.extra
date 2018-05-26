@@ -1,6 +1,9 @@
 export VIM_CTAGS_FTYPES=*.c,*.h,*.py,*.sh,*.mk,*Makefile,*.tex,*.vim
 export VIM_CTAGS_FILE=.tags
 
+cproj_generate_makefile=true
+cproj_generate_main=true
+
 update_ctags () {
     VIM_CTAGS_FILE=".tags"
 
@@ -49,8 +52,9 @@ cproj() {
         return
     fi
 
+    mainfname=main.c
+    cfgfile="$HOME"/.cproj
     projname=$1
-    guard=$(echo $projname | awk '{print toupper($0)}')_H
 
     if [ $# -eq 2 ]
     then
@@ -61,7 +65,32 @@ cproj() {
 
     [ -d $directory ] || mkdir -p $directory
 
-    cat > $directory$projname.h << EOF
+    # Source config file if it exists
+    [ -f $cfgfile ] && source $cfgfile
+
+    # Generate .h file name
+    type cproj_define_h_filename > /dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+        hfname=`cproj_define_h_filename $projname`
+    else
+        hfname=$projname.h
+    fi
+
+    # Generate .c file name
+    type cproj_define_c_filename > /dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+        cfname=`cproj_define_c_filename $projname`
+    else
+        cfname=$projname.c
+    fi
+
+    # Generate include guards
+    guard=$(echo ${hfname%.*} | awk '{print toupper($0)}')_H
+
+    # Generate .h file contents
+    read -d '' default_hfcontents << EOF
 #ifndef $guard
 #define $guard
 
@@ -70,14 +99,9 @@ cproj() {
 #endif
 EOF
 
-    cat > $directory$projname.c << EOF
-#include "$projname.h"
-
-
-EOF
-
-    cat > $directory'main.c' << EOF
-#include "$projname.h"
+    # Generate main.c file contents
+    read -d '' default_maincontents << EOF
+#include "$hfname"
 
 int main(int argc, char *argv[])
 {
@@ -85,7 +109,11 @@ int main(int argc, char *argv[])
 }
 EOF
 
-    cat > $directory'Makefile' << EOF
+    # Generate .c file contents
+    default_cfcontents="#include \"$hfname\""
+
+    # Generate Makefile contents
+    read -d '' default_makefile_contents << EOF
 OBJ= \$(patsubst %.c,%.o,\$(wildcard *.c))
 PROGNAME=$projname
 
@@ -102,6 +130,46 @@ clean:
 	rm -f *.o
 	rm -f \$(PROGNAME)
 EOF
+
+    # Run .h file contents through function defined in config file
+    type cproj_write_h_file > /dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+        hfcontents=`cproj_write_h_file $hfname "$default_hfcontents"`
+    else
+        hfcontents="$default_hfcontents"
+    fi
+
+    # Write .h file
+    echo "$hfcontents" > $directory$hfname
+
+    # Run .c file contents through function defined in config file
+    type cproj_write_c_file > /dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+        maincontents=`cproj_write_c_file "$mainfname" "$default_maincontents"`
+        cfcontents=`cproj_write_c_file $cfname "$default_cfcontents"`
+    else
+        maincontents="$default_maincontents"
+        cfcontents="$default_cfcontents"
+    fi
+
+    # Write .c file
+    echo "$cfcontents" > $directory$cfname
+
+    # Write main.c file
+    generate_main=$(echo $cproj_generate_main | awk '{print toupper($0)}')
+    if [ "$generate_main" = "TRUE" ]
+    then
+        echo "$maincontents" > "$directory$mainfname"
+    fi
+
+    # Write Makefile
+    generate_makefile=$(echo $cproj_generate_makefile | awk '{print toupper($0)}')
+    if [ "$generate_makefile" = "TRUE" ]
+    then
+        echo "$default_makefile_contents" > $directory'Makefile'
+    fi
 }
 
 parse_git_branch() {
