@@ -1,3 +1,26 @@
+" Cheatsheet to remind myself of useful commands/keys that I always forget to use...
+"
+"  ci(  Delete all text inside parens (cursor must be inside parens) and go to insert mode.
+"       Replace the ( with { or [ or whatever is needed.
+"
+"  _    Jump to first non-whitespace character after the cursor on current line
+"
+"  %    Jump to matching brace, bracket or paren for cursor position
+"
+"  qa   Start recording keystrokes in register 'a'
+"
+"  q    Stop recording
+"
+"  @a   Replay keystrokes in register 'a'
+"
+"  5@a  Replay keystrokes in register 'a' 5 times
+"
+"  "0p  Paste the last thing that was yanked-- doesn't get overwritten by delete commands.
+"       Useful when you yank a line, then delete bunch of other lines, and want to paste that
+"       original thing you yanked, where 'p' would just paste the last line you deleted.
+"
+"  ,,   Strip all trailing whitespace (custom remap defined in this file)
+
 syntax on
 set t_Co=256
 set colorcolumn=80
@@ -40,12 +63,10 @@ nnoremap <silent> n n:call HighlightNextMatch()<CR>
 nnoremap <silent> N n:call HighlightNextMatch()<CR>
 
 " turn syntax colours back on, and remove all highlights
-noremap ; :syntax on<CR>l:nohl<CR>h
+noremap ; :syntax on<CR>l:nohl<CR>h;
 
 " strip trailing whitespace in current buffer
 noremap ,, :%s/\s\+$//e<CR>
-
-noremap <CR><CR> :CtrlP<CR>
 
 " commands
 
@@ -63,8 +84,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'kien/ctrlp.vim'
-Plugin 'tomtom/tcomment_vim'
 Plugin 'sjl/badwolf'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-airline/vim-airline'
@@ -88,8 +107,3 @@ augroup END
 
 "------------------------- Plugin configuration --------------------------------
 
-" configure netrw
-let g:netrw_liststyle=3
-let g:netrw_banner=0
-let g:netrw_altv=1
-let g:netrw_winsize=25
