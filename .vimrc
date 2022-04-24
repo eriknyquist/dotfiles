@@ -84,14 +84,14 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'tpope/vim-fugitive'
 Plugin 'luochen1990/rainbow'
 Plugin 'sjl/badwolf'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
 Plugin 'flazz/vim-colorschemes'
+"Plugin 'vim-airline/vim-airline'
+"Plugin 'vim-airline/vim-airline-themes'
 
-let g:airline#extensions#tabline#enabled = 1
 call vundle#end()
 filetype plugin indent on
 " end: required for Vundle
@@ -107,6 +107,8 @@ augroup BufWriteGroup
 augroup END
 
 "------------------------- Plugin configuration --------------------------------
+
+"let g:airline#extensions#tabline#enabled = 1
 
 let g:rainbow_active = 1
 let g:rainbow_conf = { 'guifgs':   ['Cyan', 'Red', 'Green', 'Blue', 'Yellow', 'Magenta'],
