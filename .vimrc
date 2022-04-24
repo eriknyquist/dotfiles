@@ -5,7 +5,7 @@
 "
 "  _    Jump to first non-whitespace character after the cursor on current line
 "
-"  %    Jump to matching brace, bracket or paren for cursor position
+"  %    Jump to matching brace, bracket or paren for current cursor position
 "
 "  qa   Start recording keystrokes in register 'a'
 "
@@ -21,6 +21,10 @@
 "
 "  ,,   Strip all trailing whitespace (custom remap defined in this file)
 
+
+" ---------------------------------- Settings ----------------------------------
+
+
 syntax on
 set t_Co=256
 set colorcolumn=80
@@ -30,6 +34,13 @@ set tabstop=4
 set expandtab
 set paste
 set shellcmdflag=-ic
+
+" Recognise hidden .tags file
+set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
+
+
+"----------------------------------- Functions ---------------------------------
+
 
 " colours the currently selected search match red
 function! HighlightNextMatch ()
@@ -49,11 +60,9 @@ function! SetSearchHighlight ()
     execute 'highlight Normal ctermfg=Gray'
 endfunction
 
-" Recognise hidden .tags file
-set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
 
+"------------------------------ Custom re-mappings -----------------------------
 
-" re-mappings
 
 " turn off syntax colours when I'm searching for something
 nnoremap / :call SetSearchHighlight()<CR>:syntax off<CR>/
@@ -76,7 +85,9 @@ command! -nargs=1 Silent execute 'silent <args>' | redraw!
 " Run 'ctags' in current directory
 command! Tags Silent !ctags -o .tags -R .
 
+
 "-------------------------- required for Vundle --------------------------------
+
 
 set nocompatible
 filetype off
@@ -106,10 +117,14 @@ augroup BufWriteGroup
     autocmd BufWritePost $VIM_CTAGS_FTYPES Silent !update_ctags <afile>
 augroup END
 
-"------------------------- Plugin configuration --------------------------------
+
+"---------------------------- Plugin configuration -----------------------------
+
 
 "let g:airline#extensions#tabline#enabled = 1
 
 let g:rainbow_active = 1
+
+" Set some nice bright colours for bracket/paren/brace colour matching
 let g:rainbow_conf = { 'guifgs':   ['Cyan', 'Red', 'Green', 'Blue', 'Yellow', 'Magenta'],
 \                      'ctermfgs': ['Cyan', 'Red', 'Green', 'Blue', 'Yellow', 'Magenta'] }
