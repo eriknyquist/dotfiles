@@ -22,23 +22,6 @@
 "  ,,   Strip all trailing whitespace (custom remap defined in this file)
 
 
-" ---------------------------------- Settings ----------------------------------
-
-
-syntax on
-set t_Co=256
-set colorcolumn=80
-set notimeout ttimeout ttimeoutlen=200
-set shiftwidth=4
-set tabstop=4
-set expandtab
-set paste
-set shellcmdflag=-ic
-
-" Recognise hidden .tags file
-set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
-
-
 "----------------------------------- Functions ---------------------------------
 
 
@@ -100,8 +83,6 @@ Plugin 'luochen1990/rainbow'
 Plugin 'sjl/badwolf'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'flazz/vim-colorschemes'
-"Plugin 'vim-airline/vim-airline'
-"Plugin 'vim-airline/vim-airline-themes'
 
 call vundle#end()
 filetype plugin indent on
@@ -128,3 +109,19 @@ let g:rainbow_active = 1
 " Set some nice bright colours for bracket/paren/brace colour matching
 let g:rainbow_conf = { 'guifgs':   ['Cyan', 'Red', 'Green', 'Blue', 'Yellow', 'Magenta'],
 \                      'ctermfgs': ['Cyan', 'Red', 'Green', 'Blue', 'Yellow', 'Magenta'] }
+
+" ---------------------------------- Settings ----------------------------------
+
+set t_Co=256
+set colorcolumn=80
+set notimeout ttimeout ttimeoutlen=200
+set shiftwidth=4
+set tabstop=4
+set expandtab
+set paste
+set shellcmdflag=-ic
+syntax on
+colorscheme badwolf
+
+" Recognise hidden .tags file
+set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
