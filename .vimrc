@@ -76,9 +76,10 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'tpope/vim-fugitive'
+Plugin 'tomtom/tcomment_vim'
 Plugin 'luochen1990/rainbow'
 Plugin 'sjl/badwolf'
 Plugin 'airblade/vim-gitgutter'
@@ -115,13 +116,13 @@ let g:rainbow_conf = { 'guifgs':   ['Cyan', 'Red', 'Green', 'Blue', 'Yellow', 'M
 set t_Co=256
 set colorcolumn=80
 set notimeout ttimeout ttimeoutlen=200
-set shiftwidth=4
-set tabstop=4
-set expandtab
 set paste
 set shellcmdflag=-ic
 syntax on
 colorscheme badwolf
+set shiftwidth=4
+set tabstop=4
+set expandtab
 
 " Recognise hidden .tags file
 set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
