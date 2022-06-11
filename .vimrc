@@ -123,6 +123,7 @@ colorscheme badwolf
 set shiftwidth=4
 set tabstop=4
 set expandtab
+set autoindent
 
 " Recognise hidden .tags file
 set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
