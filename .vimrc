@@ -84,6 +84,7 @@ Plugin 'luochen1990/rainbow'
 Plugin 'sjl/badwolf'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'vim-airline/vim-airline'
 
 call vundle#end()
 filetype plugin indent on
@@ -124,6 +125,8 @@ set shiftwidth=4
 set tabstop=4
 set expandtab
 set autoindent
+set visualbell
+set t_vb=
 
 " Recognise hidden .tags file
 set tags=./tags,./TAGS,tags,TAGS,./.tags,./.TAGS,.tags,.TAGS
