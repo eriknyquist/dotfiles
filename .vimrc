@@ -60,6 +60,10 @@ noremap ; :syntax on<CR>l:nohl<CR>h;
 " strip trailing whitespace in current buffer
 noremap ,, :%s/\s\+$//e<CR>
 
+" insert literal tab character. Helpful when I want to insert a tab or two
+" without changing my 'expandtab' setting
+noremap tt i<c-v><tab><ESC>
+
 " commands
 
 " Run a shell command silently and redraw the screen
