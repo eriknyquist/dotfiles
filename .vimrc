@@ -3,7 +3,11 @@
 "  ci(  Delete all text inside parens (cursor must be inside parens) and go to insert mode.
 "       Replace the ( with { or [ or whatever is needed.
 "
-"  _    Jump to first non-whitespace character after the cursor on current line
+"  _    Jump to first non-whitespace character on current line (regardless of cursor position)
+"
+"  w    Jump forwards to first character of next word
+"
+"  b    Jump backwards to first character of next word
 "
 "  %    Jump to matching brace, bracket or paren for current cursor position
 "
@@ -19,6 +23,19 @@
 "       Useful when you yank a line, then delete bunch of other lines, and want to paste that
 "       original thing you yanked, where 'p' would just paste the last line you deleted.
 "
+"  [[   Jump backwards to next top-level opening brace (e.g. start of function)
+"
+"  ]]   Jump forwards to next top-level opening brace (e.g. start of function)
+"
+"  []   Jump backwards to next top-level closing brace (e.g. end of function)
+"
+"  []   Jump forwards to next top-level closing brace (e.g. end of function)
+"
+"  J    "join" current line and next line- deletes line break and all leading
+"       whitespace on the next line, replacing it with a single space
+"
+"  gJ   "join" current line and next line without the space
+"
 "  ,,   Strip all trailing whitespace (custom remap defined in this file)
 
 
@@ -30,7 +47,7 @@ function! HighlightNextMatch ()
     let [bufnum, lnum, col, off] = getpos('.')
     let matchlen = strlen(matchstr(strpart(getline('.'), col-1), @/))
     let target_pat = '\c\%#'.@/
-	let hlgroup = 'Error'
+    let hlgroup = 'Error'
 
     let hlnext = matchadd(hlgroup, target_pat, 101)
     redraw
